@@ -1,0 +1,126 @@
+<template name="home">
+<head>
+  <title>collaboration-app</title>
+</head>
+
+<body>
+  <div class="container">
+    <header>
+      <h1>collaboration-app</h1>
+
+	  <li>
+		<a href="/">Home</a>
+		<a href="forum">Task Forum</a>
+		<a href="create">Create Task</a>
+		<a href="myTasks">My Tasks</a>
+	  </li>
+    </header>
+
+	<li>
+	  <a> You are on the home screen. </a>
+	</li>
+	</div>
+</body>
+</template>
+
+<template name = 'forum'>
+<head>
+  <title>collaboration-app</title>
+</head>
+
+<body>
+  <div class="container">
+    <header>
+      <h1>Task Forum</h1>
+
+	  <li>
+		<a href="/">Home</a>
+		<a href="forum">Task Forum</a>
+		<a href="create">Create Task</a>
+		<a href="myTasks">My Tasks</a>
+	  </li>
+    </header>
+
+	<ul>
+      {{#each this}}
+        <li>
+          <a href="/task/{{_id}}"> {{text}} </a>
+        </li>
+      {{/each}}
+    </ul>
+  </div>
+</body>
+</template>
+
+<template name = 'create'>
+<head>
+  <title>collaboration-app</title>
+</head>
+
+<body>
+  <div class="container">
+    <header>
+      <h1>Create Task</h1>
+
+	  <li>
+		<a href="/">Home</a>
+		<a href="forum">Task Forum</a>
+		<a href="create">Create Task</a>
+		<a href="myTasks">My Tasks</a>
+	  </li>
+
+	  <form class="new-task">
+        <input type="text" name="text" placeholder="Task title" />
+
+      </form>
+	  	<input type="text" name="description" placeholder="Description" />
+		<input type="text" name="credits" placeholder="Credits" />
+    </header>
+	</div>
+</body>
+</template>
+
+<template name = 'myTasks'>
+  <head>
+  <title>collaboration-app</title>
+</head>
+
+<body>
+  <div class="container">
+    <header>
+      <h1>My Tasks</h1>
+
+	  <li>
+		<a href="/">Home</a>
+		<a href="forum">Task Forum</a>
+		<a href="create">Create Task</a>
+		<a href="myTasks">My Tasks</a>
+	  </li>
+    </header>
+	</div>
+</body>
+</template>
+
+<template name="viewTask">
+<head>
+  <title>collaboration-app</title>
+</head>
+
+<body>
+  <div class="container">
+    <header>
+      <h1>Task</h1>
+
+	  <li>
+		<a href="/">Home</a>
+		<a href="/forum">Task Forum</a>
+		<a href="/create">Create Task</a>
+		<a href="/myTasks">My Tasks</a>
+	  </li>
+    </header>
+	
+	<a> Task: {{_id}} </a>
+	
+	</div>
+</body>
+</template>
