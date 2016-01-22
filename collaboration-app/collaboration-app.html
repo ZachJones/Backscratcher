@@ -44,7 +44,7 @@
 	<ul>
       {{#each this}}
         <li>
-          <a href="/task/{{_id}}"> {{text}} </a>
+          <a href="/task/{{_id}}"> {{title}} </a>
         </li>
       {{/each}}
     </ul>
@@ -70,10 +70,11 @@
 	  </li>
 
 	  <li>
-	  <input type="text" name="title" placeholder="Task title" />
-	  <input type="text" name="description" placeholder="Description" />
-	  <input type="text" name="credits" placeholder="Credits" />
+
 	  <form class="new-task">
+	    <input type="text" id="title" placeholder="Task title" />
+	    <input type="text" id="description" placeholder="Description" />
+	    <input type="text" id="credits" placeholder="Credits" />
 		<button type="button"> Click Me!</button>
       </form>
 	  </li>

@@ -13,7 +13,7 @@ if (Meteor.isClient) {
       });
 
       this.route('create', {
-        data: function () {return Tasks.find({}, {sort: {createdAt: -1}})}, //set template data context
+        
       });
 
       this.route('myTasks', {});
@@ -25,25 +25,25 @@ if (Meteor.isClient) {
     });
 
     Template.create.events({
-      'submit .new-task': function (event) {
-		  
+      'click button': function (event) {
+
         //Get values from form element
-        var title = event.target.title.text.value;
-		var description = event.target.description.text.value;
-		var credits = event.target.credits.text.value;
+		var title = document.getElementById('title').value;
+		var description = document.getElementById('description').value;
+		var credits = document.getElementById('credits').value;
 
         //Insert a task into the collection
         Tasks.insert({
-          text: title,
-		  text: description,
-		  text: credits,
+          title: title,
+		  description: description,
+		  credits: credits,
           createdAt: new Date() // current time
         });
 		
-        //Clear form
-        event.target.title.text.value = "";
-		event.target.description.text.value = "";
-		event.target.credits.text.value = "";
+		//Clear form
+        document.getElementById('title').value = "";
+		document.getElementById('description').value = "";
+		document.getElementById('credits').value = "";
       }
     });
 }
