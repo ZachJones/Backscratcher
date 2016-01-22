@@ -9,17 +9,24 @@ if (Meteor.isClient) {
       });
 
       this.route('forum', {
-        data: function () {return Tasks.find({}, {sort: {createdAt: -1}})}  //set template data context
+        data: function () {return Tasks.find({assignedTo: ""}, {sort: {createdAt: -1}})}
       });
 
       this.route('create', {
+		  
+	  });
 
-      });
-
-      this.route('myTasks', {});
+      this.route('myTasks', {
+	    data: function () {return Tasks.find({assignedTo: Meteor.userId()}, {sort: {createdAt: -1}})}
+	  });
 	  
 	  this.route('viewTask', {
         path: '/task/:_id',
+        data: function () {return Tasks.findOne({_id: this.params._id})},
+      });
+	  
+	  this.route('viewAssignedTask', {
+        path: '/assigned/:_id',
         data: function () {return Tasks.findOne({_id: this.params._id})},
       });
     });
@@ -37,6 +44,8 @@ if (Meteor.isClient) {
           title: title,
 		  description: description,
 		  credits: credits,
+		  createdBy: Meteor.userId(),
+		  assignedTo: "",
           createdAt: new Date() // current time
         });
 		
@@ -51,8 +60,20 @@ if (Meteor.isClient) {
 		'click button': function (event) {
 			
 			//Assign task to current user
+			Tasks.update(this._id, {$set: {assignedTo: Meteor.userId()}});
+
+			document.getElementById("button").style.display="none";
 		}
 	});
+	
+	/* --- Do stuff on page load ---
+	Template.viewTask.rendered = function(){
+		if(this.assignedTo != "")
+		{
+			document.getElementById("button").style.display="none";
+		}
+	}
+	*/
 	
 	Accounts.ui.config({
     passwordSignupFields: "USERNAME_ONLY"

@@ -126,6 +126,7 @@
 
 <body>
   <div class="container">
+    {{#if currentUser}}
     <header>
       <h1>My Tasks</h1>
 
@@ -137,7 +138,28 @@
 		<a href="myTasks">My Tasks</a>
 	  </li>
     </header>
-	</div>
+	
+	<ul>
+      {{#each this}}
+        <li>
+          <a href="/assigned/{{_id}}"> {{title}} </a>
+        </li>
+      {{/each}}
+    </ul>
+	
+	{{else}}
+	  <header>
+		<h1>Backscratcher</h1>
+
+		{{> loginButtons}}
+      </header>
+	
+	  <li>
+		<p> Welcome to the Backscratcher<sup>tm</sup> collaborative platform. </p> 
+		<p> Please login to continue. </p>
+	  </li>
+	{{/if}}
+</div>
 </body>
 </template>
 
@@ -174,9 +196,60 @@
 		<p> <b>Reward</b> </p>
 		<p> {{credits}} </p>
 	  </li>
-	<span class="button">
-	  <button type="button">Accept Task</button>
-	</span>
+	  <span class="button">
+	    <button type="button" id="button">Accept Task</button>
+	  </span>
+	</ul>
+	
+    {{else}}
+	  <header>
+		<h1>Backscratcher</h1>
+
+		{{> loginButtons}}
+      </header>
+	
+	  <li>
+		<p> Welcome to the Backscratcher<sup>tm</sup> collaborative platform. </p> 
+		<p> Please login to continue. </p>
+	  </li>
+	{{/if}}
+</div>
+</body>
+</template>
+
+<template name="viewAssignedTask">
+<head>
+  <title>collaboration-app</title>
+</head>
+
+<body>
+  <div class="container">
+    {{#if currentUser}}
+    <header>
+      <h1>Task</h1>
+	  
+	  {{> loginButtons}}
+	  
+	  <li>
+		<a href="/forum">Task Forum</a>
+		<a href="/create">Create Task</a>
+		<a href="/myTasks">My Tasks</a>
+	  </li>
+    </header>
+	
+	<ul>
+	  <li>
+		<p> <b>Task</b> </p>
+		<p> {{title}} </p>
+	  </li>
+	  <li>
+		<p> <b>Description</b> </p>
+		<p> {{description}} </p>
+	  </li>
+	  <li>
+		<p> <b>Reward</b> </p>
+		<p> {{credits}} </p>
+	  </li>
 	</ul>
 	
     {{else}}
