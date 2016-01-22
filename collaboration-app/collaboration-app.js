@@ -13,7 +13,7 @@ if (Meteor.isClient) {
       });
 
       this.route('create', {
-        
+
       });
 
       this.route('myTasks', {});
@@ -46,4 +46,15 @@ if (Meteor.isClient) {
 		document.getElementById('credits').value = "";
       }
     });
+	
+	Template.viewTask.events({
+		'click button': function (event) {
+			
+			//Assign task to current user
+		}
+	});
+	
+	Accounts.ui.config({
+    passwordSignupFields: "USERNAME_ONLY"
+    }); 
 }

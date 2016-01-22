@@ -1,25 +1,28 @@
-<template name="home">
+<template name = 'home'>
 <head>
   <title>collaboration-app</title>
 </head>
-
 <body>
   <div class="container">
-    <header>
-      <h1>collaboration-app</h1>
+  	  <header>
+		<h1>Backscratcher</h1>
 
+		{{> loginButtons}}
+		
+		{{#if currentUser}}
+		<li>
+		  <a href="forum">Task Forum</a>
+		  <a href="create">Create Task</a>
+		  <a href="myTasks">My Tasks</a>
+		</li>
+		{{/if}}
+      </header>
+	
 	  <li>
-		<a href="/">Home</a>
-		<a href="forum">Task Forum</a>
-		<a href="create">Create Task</a>
-		<a href="myTasks">My Tasks</a>
+		<p> Welcome to the Backscratcher<sup>tm</sup> collaborative platform. </p> 
+		<p> Please login to continue. </p>
 	  </li>
-    </header>
-
-	<li>
-	  <a> You are on the home screen. </a>
-	</li>
-	</div>
+  </div>
 </body>
 </template>
 
@@ -30,11 +33,14 @@
 
 <body>
   <div class="container">
+    {{#if currentUser}}
     <header>
       <h1>Task Forum</h1>
 
+	  {{> loginButtons}}
+	  
+	  
 	  <li>
-		<a href="/">Home</a>
 		<a href="forum">Task Forum</a>
 		<a href="create">Create Task</a>
 		<a href="myTasks">My Tasks</a>
@@ -48,6 +54,19 @@
         </li>
       {{/each}}
     </ul>
+	
+	{{else}}
+	  <header>
+		<h1>Backscratcher</h1>
+
+		{{> loginButtons}}
+      </header>
+	
+	  <li>
+		<p> Welcome to the Backscratcher<sup>tm</sup> collaborative platform. </p> 
+		<p> Please login to continue. </p>
+	  </li>
+	{{/if}}
   </div>
 </body>
 </template>
@@ -59,11 +78,13 @@
 
 <body>
   <div class="container">
+    {{#if currentUser}}
     <header>
       <h1>Create Task</h1>
 
+	  {{> loginButtons}}
+	  
 	  <li>
-		<a href="/">Home</a>
 		<a href="forum">Task Forum</a>
 		<a href="create">Create Task</a>
 		<a href="myTasks">My Tasks</a>
@@ -72,15 +93,29 @@
 	  <li>
 
 	  <form class="new-task">
-	    <input type="text" id="title" placeholder="Task title" />
-	    <input type="text" id="description" placeholder="Description" />
+		<input type="text" id="title" placeholder="Task title" />
+	    <textarea type="text" id="description" placeholder="Description" cols="74" rows="10"></textarea>
 	    <input type="text" id="credits" placeholder="Credits" />
-		<button type="button"> Click Me!</button>
-      </form>
+		<span class="button">
+		<button type="button">Create Task</button>
+		</span>
+	  </form>
 	  </li>
-	  
     </header>
-	</div>
+	
+	{{else}}
+	  <header>
+		<h1>Backscratcher</h1>
+
+		{{> loginButtons}}
+      </header>
+	
+	  <li>
+		<p> Welcome to the Backscratcher<sup>tm</sup> collaborative platform. </p> 
+		<p> Please login to continue. </p>
+	  </li>
+	{{/if}}
+</div>
 </body>
 </template>
 
@@ -94,8 +129,9 @@
     <header>
       <h1>My Tasks</h1>
 
+	  {{> loginButtons}}
+	  
 	  <li>
-		<a href="/">Home</a>
 		<a href="forum">Task Forum</a>
 		<a href="create">Create Task</a>
 		<a href="myTasks">My Tasks</a>
@@ -112,19 +148,49 @@
 
 <body>
   <div class="container">
+    {{#if currentUser}}
     <header>
       <h1>Task</h1>
-
+	  
+	  {{> loginButtons}}
+	  
 	  <li>
-		<a href="/">Home</a>
 		<a href="/forum">Task Forum</a>
 		<a href="/create">Create Task</a>
 		<a href="/myTasks">My Tasks</a>
 	  </li>
     </header>
 	
-	<a> Task: {{_id}} </a>
+	<ul>
+	  <li>
+		<p> <b>Task</b> </p>
+		<p> {{title}} </p>
+	  </li>
+	  <li>
+		<p> <b>Description</b> </p>
+		<p> {{description}} </p>
+	  </li>
+	  <li>
+		<p> <b>Reward</b> </p>
+		<p> {{credits}} </p>
+	  </li>
+	<span class="button">
+	  <button type="button">Accept Task</button>
+	</span>
+	</ul>
 	
-	</div>
+    {{else}}
+	  <header>
+		<h1>Backscratcher</h1>
+
+		{{> loginButtons}}
+      </header>
+	
+	  <li>
+		<p> Welcome to the Backscratcher<sup>tm</sup> collaborative platform. </p> 
+		<p> Please login to continue. </p>
+	  </li>
+	{{/if}}
+</div>
 </body>
 </template>
