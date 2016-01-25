@@ -1,7 +1,20 @@
-Tasks = new Mongo.Collection("tasks");
+if(Meteor.isServer)
+{
+	var database = new MongoInternals.RemoteCollectionDriver("mongodb://127.0.0.1:3001/meteor");
+	Tasks = new Mongo.Collection("tasks", {_driver: database});
+	//Meteor.publish('tasks', function() { return Tasks.find(); }); --- Not needed with autopublish
+	
+	UserInfo = new Mongo.Collection("userInfo", {_driver: database});
+}
 
-if (Meteor.isClient) {
-
+if (Meteor.isClient) 
+{
+	Meteor.subscribe('tasks'); //Links the tasks database to its driver connection
+	Tasks = new Mongo.Collection("tasks");
+	
+	Meteor.subscribe('userInfo');
+	UserInfo = new Mongo.Collection("userInfo");
+	
     Router.map(function () {
 
       this.route('home', {
@@ -13,7 +26,7 @@ if (Meteor.isClient) {
       });
 
       this.route('create', {
-		  
+		  data: function () {return UserInfo.find({})}
 	  });
 
       this.route('myTasks', {
@@ -66,14 +79,21 @@ if (Meteor.isClient) {
 		}
 	});
 	
-	/* --- Do stuff on page load ---
-	Template.viewTask.rendered = function(){
-		if(this.assignedTo != "")
+	// --- Do stuff on page load ---
+	Template.create.rendered = function()
+	{
+		console.log(UI.getData()); //this.credits??
+		for(iCounter = 0; iCounter < this.length; iCounter++)
 		{
-			document.getElementById("button").style.display="none";
+			if(this.user == Meteor[iCounter].user())
+			{
+				var credits = document.createElement("P");
+				var textVar = document.createTextNode("Credits: " + this.credits);
+				credits.appendChild(textVar);
+				document.body.appendChild(credits);
+			}
 		}
 	}
-	*/
 	
 	Accounts.ui.config({
     passwordSignupFields: "USERNAME_ONLY"
