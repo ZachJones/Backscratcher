@@ -4,6 +4,9 @@ if(Meteor.isServer)
 	Tasks = new Mongo.Collection("tasks", {_driver: database});
 	//Meteor.publish('tasks', function() { return Tasks.find(); }); --- Not needed with autopublish
 	
+	//database.mongo.close();
+	
+	//var database2 = new MongoInternals.RemoteCollectionDriver("mongodb://127.0.0.1:3007/meteor");
 	UserInfo = new Mongo.Collection("userInfo", {_driver: database});
 }
 
@@ -26,7 +29,7 @@ if (Meteor.isClient)
       });
 
       this.route('create', {
-		  data: function () {return UserInfo.find({})}
+		  data: function () {return UserInfo.find()}
 	  });
 
       this.route('myTasks', {
@@ -79,22 +82,140 @@ if (Meteor.isClient)
 		}
 	});
 	
-	// --- Do stuff on page load ---
-	Template.create.rendered = function()
+	// --- Template Helpers ---
+	Template.create.helpers(
 	{
-		console.log(UI.getData()); //this.credits??
-		for(iCounter = 0; iCounter < this.length; iCounter++)
+		addUser: function()
 		{
-			if(this.user == Meteor[iCounter].user())
+			var found = false;
+			
+			UserInfo.find().forEach(function(doc) 
 			{
-				var credits = document.createElement("P");
-				var textVar = document.createTextNode("Credits: " + this.credits);
-				credits.appendChild(textVar);
-				document.body.appendChild(credits);
+				if(Meteor.userId() == doc.user)
+				{
+					found = true;
+				}
+			});
+			
+			if(found == false)
+			{
+				UserInfo.insert({user: Meteor.userId, credits: "100"})
 			}
-		}
-	}
+	}});
 	
+	Template.create.helpers(
+	{	
+		genUserData: function()
+		{
+			var created = 0;
+			
+			UserInfo.find().forEach(function(doc) 
+			{				
+				if(Meteor.userId() == doc.user && created == 0)
+				{
+					var creditPara = document.createElement("P");
+					var textVar = document.createTextNode("Credits: " + doc.credits);
+					creditPara.appendChild(textVar);
+					
+					var elementLoc = document.getElementById("h1");
+					
+					elementLoc.appendChild(creditPara);
+					
+					created = 1;		
+				}
+			});
+		}
+	});
+	
+	Template.forum.helpers(
+	{
+		addUser: function()
+		{
+			var found = false;
+			
+			UserInfo.find().forEach(function(doc) 
+			{
+				if(Meteor.userId() == doc.user)
+				{
+					found = true;
+				}
+			});
+			
+			if(found == false)
+			{
+				UserInfo.insert({user: Meteor.userId, credits: "100"})
+			}
+	}});
+	
+	Template.forum.helpers(
+	{	
+		genUserData: function()
+		{
+			var created = false;
+			
+			UserInfo.find().forEach(function(doc) 
+			{				
+				if(Meteor.userId() == doc.user && created == false)
+				{
+					var creditPara = document.createElement("P");
+					var textVar = document.createTextNode("Credits: " + doc.credits);
+					creditPara.appendChild(textVar);
+					
+					var elementLoc = document.getElementById("h1");
+					
+					elementLoc.appendChild(creditPara);
+					
+					created = true;
+				}
+			});
+		}
+	});
+	
+	Template.myTasks.helpers(
+	{
+		addUser: function()
+		{
+			var found = false;
+			
+			UserInfo.find().forEach(function(doc) 
+			{
+				if(Meteor.userId() == doc.user)
+				{
+					found = true;
+				}
+			});
+			
+			if(found == false)
+			{
+				UserInfo.insert({user: Meteor.userId, credits: "100"})
+			}
+	}});
+	
+	Template.myTasks.helpers(
+	{	
+		genUserData: function()
+		{
+			var created = false;
+			
+			UserInfo.find().forEach(function(doc) 
+			{				
+				if(Meteor.userId() == doc.user && created == false)
+				{
+					var creditPara = document.createElement("P");
+					var textVar = document.createTextNode("Credits: " + doc.credits);
+					creditPara.appendChild(textVar);
+					
+					var elementLoc = document.getElementById("h1");
+					
+					elementLoc.appendChild(creditPara);
+					
+					created = true;
+				}
+			});
+		}
+	});
+	
+
 	Accounts.ui.config({
     passwordSignupFields: "USERNAME_ONLY"
     }); 

@@ -35,10 +35,13 @@
   <div class="container">
     {{#if currentUser}}
     <header>
-      <h1>Task Forum</h1>
+      <h1 id="h1">Task Forum</h1>
 
 	  {{> loginButtons}}
 	  
+	  {{addUser}}
+	  
+	  {{genUserData}}
 	  
 	  <li>
 		<a href="forum">Task Forum</a>
@@ -80,9 +83,13 @@
   <div class="container">
     {{#if currentUser}}
     <header>
-      <h1>Create Task</h1>
+      <h1 id="h1">Create Task</h1>
 
 	  {{> loginButtons}}
+	  
+	  {{addUser}}
+	  
+	  {{genUserData}}
 	  
 	  <li>
 		<a href="forum">Task Forum</a>
@@ -128,9 +135,13 @@
   <div class="container">
     {{#if currentUser}}
     <header>
-      <h1>My Tasks</h1>
+      <h1 id="h1">My Tasks</h1>
 
 	  {{> loginButtons}}
+	  
+	  {{addUser}}
+	  
+	  {{genUserData}}
 	  
 	  <li>
 		<a href="forum">Task Forum</a>
