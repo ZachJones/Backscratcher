@@ -89,16 +89,18 @@ if (Meteor.isClient)
 		{
 			var found = false;
 			
-			UserInfo.find().forEach(function(doc) 
-			{
-				if(Meteor.userId() == doc.user)
+			//UserInfo.find().forEach(function(doc) 
+			//{
+				if(UserInfo.find({user: Meteor.userId}))
 				{
+					console.log("Found!")
 					found = true;
 				}
-			});
+			//});
 			
 			if(found == false)
 			{
+				console.log("Created!")
 				UserInfo.insert({user: Meteor.userId, credits: "100"})
 			}
 	}});
@@ -109,12 +111,14 @@ if (Meteor.isClient)
 		{
 			var created = 0;
 			
-			UserInfo.find().forEach(function(doc) 
-			{				
-				if(Meteor.userId() == doc.user && created == 0)
+			//UserInfo.find().forEach(function(doc) 
+			//{				
+				if(UserInfo.find({user: Meteor.userId}))
 				{
+					console.log(this.credits); //How to reference the current credits?
+					
 					var creditPara = document.createElement("P");
-					var textVar = document.createTextNode("Credits: " + doc.credits);
+					var textVar = document.createTextNode("Credits: " + UserInfo.find({user: Meteor.userId}).credits);
 					creditPara.appendChild(textVar);
 					
 					var elementLoc = document.getElementById("h1");
@@ -123,7 +127,7 @@ if (Meteor.isClient)
 					
 					created = 1;		
 				}
-			});
+			//});
 		}
 	});
 	
