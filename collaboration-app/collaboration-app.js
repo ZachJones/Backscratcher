@@ -54,21 +54,33 @@ if (Meteor.isClient)
 		var title = document.getElementById('title').value;
 		var description = document.getElementById('description').value;
 		var credits = document.getElementById('credits').value;
-
-        //Insert a task into the collection
-        Tasks.insert({
-          title: title,
-		  description: description,
-		  credits: credits,
-		  createdBy: Meteor.userId(),
-		  assignedTo: "",
-          createdAt: new Date() // current time
-        });
+		var currentUser = UserInfo.findOne({user: Meteor.userId()});
+		var newCredits = currentUser.credits - credits;
 		
-		//Clear form
-        document.getElementById('title').value = "";
-		document.getElementById('description').value = "";
-		document.getElementById('credits').value = "";
+		if(newCredits >= 0 && credits > 0)
+		{
+			//Insert a task into the collection
+			Tasks.insert({
+			  title: title,
+			  description: description,
+			  credits: credits,
+			  createdBy: Meteor.userId(),
+			  assignedTo: "",
+			  createdAt: new Date() // current time
+			});
+
+			//Update credits
+			UserInfo.update({_id: currentUser._id}, {$set: {credits: newCredits}});
+			
+			//Clear form
+			document.getElementById('title').value = "";
+			document.getElementById('description').value = "";
+			document.getElementById('credits').value = "";	
+		}
+		else
+		{
+			throw new Error("You don't have enough credits, please enter an amount you can afford")
+		}
       }
     });
 	
@@ -108,25 +120,25 @@ if (Meteor.isClient)
 		genUserData: function()
 		{
 			var created = 0;
-			var doc = UserInfo.findOne({user: Meteor.userId()})
-			var creditElement = document.getElementById("credits");
+			var doc = UserInfo.findOne({user: Meteor.userId()});
+			var creditElement = document.getElementById("currentCredits");
 			
-			console.log(creditElement);
+			//console.log(creditElement);
 					
 			if(doc && !creditElement)
 			{
-				console.log(doc.credits);
+				console.log("Creating element");
 				
 				var creditPara = document.createElement("P");
-				creditPara.setAttribute("id", "credits")
+				creditPara.setAttribute("id", "currentCredits")
 				var textVar = document.createTextNode("Credits: " + doc.credits);
 				creditPara.appendChild(textVar);
 				
-				console.log(creditPara);
+				//console.log(creditPara);
 				
 				var elementLoc = document.getElementById("head");
 				
-				console.log(elementLoc);
+				//console.log(elementLoc);
 				
 				elementLoc.appendChild(creditPara);
 				
@@ -141,24 +153,24 @@ if (Meteor.isClient)
 		{
 			var created = 0;
 			var doc = UserInfo.findOne({user: Meteor.userId()})
-			var creditElement = document.getElementById("credits");
+			var creditElement = document.getElementById("currentCredits");
 			
-			console.log(creditElement);
+			//console.log(creditElement);
 					
 			if(doc && !creditElement)
 			{
-				console.log(doc.credits);
+				console.log("Creating element");
 				
 				var creditPara = document.createElement("P");
-				creditPara.setAttribute("id", "credits")
+				creditPara.setAttribute("id", "currentCredits")
 				var textVar = document.createTextNode("Credits: " + doc.credits);
 				creditPara.appendChild(textVar);
 				
-				console.log(creditPara);
+				//console.log(creditPara);
 				
 				var elementLoc = document.getElementById("head");
 				
-				console.log(elementLoc);
+				//console.log(elementLoc);
 				
 				elementLoc.appendChild(creditPara);
 				
@@ -173,7 +185,7 @@ if (Meteor.isClient)
 		{
 			var created = 0;
 			var doc = UserInfo.findOne({user: Meteor.userId()})
-			var creditElement = document.getElementById("credits");
+			var creditElement = document.getElementById("currentCredits");
 			
 			console.log(creditElement);
 					
@@ -182,7 +194,7 @@ if (Meteor.isClient)
 				console.log(doc.credits); //How to reference the current credits?
 				
 				var creditPara = document.createElement("P");
-				creditPara.setAttribute("id", "credits")
+				creditPara.setAttribute("id", "currentCredits")
 				var textVar = document.createTextNode("Credits: " + doc.credits);
 				creditPara.appendChild(textVar);
 				
