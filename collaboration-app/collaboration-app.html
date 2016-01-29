@@ -10,6 +10,9 @@
 		{{> loginButtons}}
 		
 		{{#if currentUser}}
+		
+		{{addUser}}
+		
 		<li>
 		  <a href="forum">Task Forum</a>
 		  <a href="create">Create Task</a>
@@ -33,43 +36,36 @@
 
 <body>
   <div class="container">
-    {{#if currentUser}}
     <header>
-      <h1 id="h1">Task Forum</h1>
-
+      <h1 id="head">Backscratcher</h1>
+	  
 	  {{> loginButtons}}
 	  
-	  <!--{{addUser}}
-	  
-	  {{genUserData}}-->
-	  
-	  <li>
+	  {{#if currentUser}}
+		{{genUserData}}
+
+		<li>
 		<a href="forum">Task Forum</a>
 		<a href="create">Create Task</a>
 		<a href="myTasks">My Tasks</a>
-	  </li>
-    </header>
+		</li>
 
-	<ul>
-      {{#each this}}
-        <li>
-          <a href="/task/{{_id}}"> {{title}} </a>
-        </li>
-      {{/each}}
-    </ul>
-	
-	{{else}}
-	  <header>
-		<h1>Backscratcher</h1>
-
-		{{> loginButtons}}
-      </header>
-	
-	  <li>
-		<p> Welcome to the Backscratcher<sup>tm</sup> collaborative platform. </p> 
-		<p> Please login to continue. </p>
-	  </li>
-	{{/if}}
+		<h1>Task Forum</h1>
+		
+		<ul>
+		  {{#each this}}
+			<li>
+			  <a href="/task/{{_id}}"> {{title}} </a>
+			</li>
+		  {{/each}}
+		</ul>
+	  {{else}}
+	    <li>
+		  <p> Welcome to the Backscratcher<sup>tm</sup> collaborative platform. </p> 
+		  <p> Please login to continue. </p>
+	    </li>
+	  {{/if}}
+	</header>
   </div>
 </body>
 </template>
@@ -81,47 +77,41 @@
 
 <body>
   <div class="container">
-    {{#if currentUser}}
-    <header>
-      <h1 id="h1">Create Task</h1>
+	<header>
+      <h1 id="head">Backscratcher</h1>
 
 	  {{> loginButtons}}
 	  
-	  {{addUser}}
-	  
-	  {{genUserData}}
-	  
-	  <li>
-		<a href="forum">Task Forum</a>
-		<a href="create">Create Task</a>
-		<a href="myTasks">My Tasks</a>
-	  </li>
+	  {{#if currentUser}}
 
-	  <li>
+		{{genUserData}}
 
-	  <form class="new-task">
-		<input type="text" id="title" placeholder="Task title" />
-	    <textarea type="text" id="description" placeholder="Description" cols="74" rows="10"></textarea>
-	    <input type="text" id="credits" placeholder="Credits" />
-		<span class="button">
-		<button type="button">Create Task</button>
-		</span>
-	  </form>
-	  </li>
-    </header>
+		<li>
+		  <a href="forum">Task Forum</a>
+		  <a href="create">Create Task</a>
+		  <a href="myTasks">My Tasks</a>
+		</li>
+
+		<h1>Create Task</h1>
+		
+		<li>
+		  <form class="new-task">
+		    <input type="text" id="title" placeholder="Task title" />
+		    <textarea type="text" id="description" placeholder="Description" cols="74" rows="10"></textarea>
+		    <input type="text" id="credits" placeholder="Credits" />
+		    <span class="button">
+		      <button type="button">Create Task</button>
+		    </span>
+		  </form>
+		</li>
+	  {{else}}
+	    <li>
+		  <p> Welcome to the Backscratcher<sup>tm</sup> collaborative platform. </p> 
+		  <p> Please login to continue. </p>
+	    </li>
+	  {{/if}}
 	
-	{{else}}
-	  <header>
-		<h1>Backscratcher</h1>
-
-		{{> loginButtons}}
-      </header>
-	
-	  <li>
-		<p> Welcome to the Backscratcher<sup>tm</sup> collaborative platform. </p> 
-		<p> Please login to continue. </p>
-	  </li>
-	{{/if}}
+	</header>
 </div>
 </body>
 </template>
@@ -133,44 +123,37 @@
 
 <body>
   <div class="container">
-    {{#if currentUser}}
     <header>
-      <h1 id="h1">My Tasks</h1>
+	  <h1 id="head">Backscratcher</h1>
 
 	  {{> loginButtons}}
-	  
-	  <!--{{addUser}}
-	  
-	  {{genUserData}}-->
-	  
-	  <li>
-		<a href="forum">Task Forum</a>
-		<a href="create">Create Task</a>
-		<a href="myTasks">My Tasks</a>
-	  </li>
-    </header>
-	
-	<ul>
-      {{#each this}}
-        <li>
-          <a href="/assigned/{{_id}}"> {{title}} </a>
-        </li>
-      {{/each}}
-    </ul>
-	
-	{{else}}
-	  <header>
-		<h1>Backscratcher</h1>
+  
+      {{#if currentUser}}
+		{{genUserData}}
 
-		{{> loginButtons}}
-      </header>
-	
-	  <li>
-		<p> Welcome to the Backscratcher<sup>tm</sup> collaborative platform. </p> 
-		<p> Please login to continue. </p>
-	  </li>
-	{{/if}}
-</div>
+		<li>
+		  <a href="forum">Task Forum</a>
+		  <a href="create">Create Task</a>
+		  <a href="myTasks">My Tasks</a>
+		</li>
+
+		<h1>My Tasks</h1>
+		
+		<ul>
+		  {{#each this}}
+		    <li>
+		      <a href="/assigned/{{_id}}"> {{title}} </a>
+		    </li>
+		  {{/each}}
+		</ul>
+	  {{else}}
+	    <li>
+		  <p> Welcome to the Backscratcher<sup>tm</sup> collaborative platform. </p> 
+		  <p> Please login to continue. </p>
+	    </li>
+	  {{/if}}
+	</header>
+  </div>
 </body>
 </template>
 

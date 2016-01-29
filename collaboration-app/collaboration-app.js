@@ -29,7 +29,7 @@ if (Meteor.isClient)
       });
 
       this.route('create', {
-		  data: function () {return UserInfo.find()}
+		data: function () {return UserInfo.find()}
 	  });
 
       this.route('myTasks', {
@@ -83,25 +83,23 @@ if (Meteor.isClient)
 	});
 	
 	// --- Template Helpers ---
-	Template.create.helpers(
+	Template.home.helpers(
 	{
 		addUser: function()
 		{
 			var found = false;
-			
-			//UserInfo.find().forEach(function(doc) 
-			//{
-				if(UserInfo.find({user: Meteor.userId}))
-				{
-					console.log("Found!")
-					found = true;
-				}
-			//});
-			
-			if(found == false)
+			var id = Meteor.userId();
+			console.log(id);
+
+			if(UserInfo.findOne({user: Meteor.userId()}))
+			{
+				console.log(UserInfo.findOne({user: Meteor.userId()}))
+				found = true;
+			}
+			else if(found == false)
 			{
 				console.log("Created!")
-				UserInfo.insert({user: Meteor.userId, credits: "100"})
+				UserInfo.insert({user: Meteor.userId(), credits: "100"})
 			}
 	}});
 	
@@ -110,112 +108,94 @@ if (Meteor.isClient)
 		genUserData: function()
 		{
 			var created = 0;
+			var doc = UserInfo.findOne({user: Meteor.userId()})
+			var creditElement = document.getElementById("credits");
 			
-			//UserInfo.find().forEach(function(doc) 
-			//{				
-				if(UserInfo.find({user: Meteor.userId}))
-				{
-					console.log(this.credits); //How to reference the current credits?
+			console.log(creditElement);
 					
-					var creditPara = document.createElement("P");
-					var textVar = document.createTextNode("Credits: " + UserInfo.find({user: Meteor.userId}).credits);
-					creditPara.appendChild(textVar);
-					
-					var elementLoc = document.getElementById("h1");
-					
-					elementLoc.appendChild(creditPara);
-					
-					created = 1;		
-				}
-			//});
+			if(doc && !creditElement)
+			{
+				console.log(doc.credits);
+				
+				var creditPara = document.createElement("P");
+				creditPara.setAttribute("id", "credits")
+				var textVar = document.createTextNode("Credits: " + doc.credits);
+				creditPara.appendChild(textVar);
+				
+				console.log(creditPara);
+				
+				var elementLoc = document.getElementById("head");
+				
+				console.log(elementLoc);
+				
+				elementLoc.appendChild(creditPara);
+				
+				created = 1;		
+			}
 		}
 	});
-	
-	Template.forum.helpers(
-	{
-		addUser: function()
-		{
-			var found = false;
-			
-			UserInfo.find().forEach(function(doc) 
-			{
-				if(Meteor.userId() == doc.user)
-				{
-					found = true;
-				}
-			});
-			
-			if(found == false)
-			{
-				UserInfo.insert({user: Meteor.userId, credits: "100"})
-			}
-	}});
 	
 	Template.forum.helpers(
 	{	
 		genUserData: function()
 		{
-			var created = false;
+			var created = 0;
+			var doc = UserInfo.findOne({user: Meteor.userId()})
+			var creditElement = document.getElementById("credits");
 			
-			UserInfo.find().forEach(function(doc) 
-			{				
-				if(Meteor.userId() == doc.user && created == false)
-				{
-					var creditPara = document.createElement("P");
-					var textVar = document.createTextNode("Credits: " + doc.credits);
-					creditPara.appendChild(textVar);
+			console.log(creditElement);
 					
-					var elementLoc = document.getElementById("h1");
-					
-					elementLoc.appendChild(creditPara);
-					
-					created = true;
-				}
-			});
+			if(doc && !creditElement)
+			{
+				console.log(doc.credits);
+				
+				var creditPara = document.createElement("P");
+				creditPara.setAttribute("id", "credits")
+				var textVar = document.createTextNode("Credits: " + doc.credits);
+				creditPara.appendChild(textVar);
+				
+				console.log(creditPara);
+				
+				var elementLoc = document.getElementById("head");
+				
+				console.log(elementLoc);
+				
+				elementLoc.appendChild(creditPara);
+				
+				created = 1;		
+			}
 		}
 	});
-	
-	Template.myTasks.helpers(
-	{
-		addUser: function()
-		{
-			var found = false;
-			
-			UserInfo.find().forEach(function(doc) 
-			{
-				if(Meteor.userId() == doc.user)
-				{
-					found = true;
-				}
-			});
-			
-			if(found == false)
-			{
-				UserInfo.insert({user: Meteor.userId, credits: "100"})
-			}
-	}});
-	
+
 	Template.myTasks.helpers(
 	{	
 		genUserData: function()
 		{
-			var created = false;
+			var created = 0;
+			var doc = UserInfo.findOne({user: Meteor.userId()})
+			var creditElement = document.getElementById("credits");
 			
-			UserInfo.find().forEach(function(doc) 
-			{				
-				if(Meteor.userId() == doc.user && created == false)
-				{
-					var creditPara = document.createElement("P");
-					var textVar = document.createTextNode("Credits: " + doc.credits);
-					creditPara.appendChild(textVar);
+			console.log(creditElement);
 					
-					var elementLoc = document.getElementById("h1");
-					
-					elementLoc.appendChild(creditPara);
-					
-					created = true;
-				}
-			});
+			if(doc)
+			{
+				console.log(doc.credits); //How to reference the current credits?
+				
+				var creditPara = document.createElement("P");
+				creditPara.setAttribute("id", "credits")
+				var textVar = document.createTextNode("Credits: " + doc.credits);
+				creditPara.appendChild(textVar);
+				
+				console.log(creditPara);
+				
+				var elementLoc = document.getElementById("head");
+				
+				console.log(elementLoc);
+				
+				elementLoc.appendChild(creditPara);
+				
+				created = 1;		
+			}
 		}
 	});
 	
