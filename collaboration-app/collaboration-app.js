@@ -25,7 +25,7 @@ if (Meteor.isClient)
       });
 
       this.route('forum', {
-        data: function () {return Tasks.find({assignedTo: ""}, {sort: {createdAt: -1}})}
+        data: function () {return Tasks.find({ $and: [{assignedTo: ""}, {createdBy: {$not: Meteor.userId()}}]}, {sort: {createdAt: -1}})}
       });
 
       this.route('create', {
@@ -33,7 +33,7 @@ if (Meteor.isClient)
 	  });
 
       this.route('myTasks', {
-	    data: function () {return Tasks.find({assignedTo: Meteor.userId()}, {sort: {createdAt: -1}})}
+	    data: function () {return Tasks.find({ $and: [{ $or: [{completed1: ""}, {completed2: ""}]}, {$or: [{assignedTo: Meteor.userId()}, {createdBy: Meteor.userId()}]}]}, {sort: {createdAt: -1}})}
 	  });
 	  
 	  this.route('viewTask', {
@@ -66,6 +66,8 @@ if (Meteor.isClient)
 			  credits: credits,
 			  createdBy: Meteor.userId(),
 			  assignedTo: "",
+			  completed1: "",
+			  completed2: "",
 			  createdAt: new Date() // current time
 			});
 
@@ -90,6 +92,26 @@ if (Meteor.isClient)
 			//Assign task to current user
 			Tasks.update(this._id, {$set: {assignedTo: Meteor.userId()}});
 
+			document.getElementById("button").style.display="none";
+		}
+	});
+	
+	Template.viewAssignedTask.events({
+		'click button': function (event) {
+			
+			//Complete task for current user
+			var taskId = Router.current().params._id;
+			var currentTask = Tasks.findOne({_id: taskId});
+			
+			if(currentTask.completed1 != Meteor.userId() && currentTask.completed2 != Meteor.userId)
+			{
+				
+				if(currentTask.completed1 == "")
+					Tasks.update(taskId, {$set: {completed1: Meteor.userId()}});
+				else
+					Tasks.update(taskId, {$set: {completed2: Meteor.userId()}});
+			}
+			
 			document.getElementById("button").style.display="none";
 		}
 	});
@@ -210,7 +232,6 @@ if (Meteor.isClient)
 			}
 		}
 	});
-	
 
 	Accounts.ui.config({
     passwordSignupFields: "USERNAME_ONLY"
