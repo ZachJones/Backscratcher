@@ -13,6 +13,10 @@
 		
 		{{addUser}}
 		
+		<p>
+			Credits: {{this.userData.credits}}
+		</p>
+		
 		<li>
 		  <a href="forum">Task Forum</a>
 		  <a href="create">Create Task</a>
@@ -86,9 +90,10 @@
 	  {{> loginButtons}}
 	  
 	  {{#if currentUser}}
-
-		{{genUserData}}
-
+		<p>
+			Credits: {{this.userData.credits}}
+		</p>
+		
 		<li>
 		  <a href="forum">Task Forum</a>
 		  <a href="create">Create Task</a>
@@ -132,7 +137,9 @@
 	  {{> loginButtons}}
   
       {{#if currentUser}}
-		{{genUserData}}
+		<p>
+			Credits: {{this.userData.credits}}
+		</p>
 
 		<li>
 		  <a href="forum">Task Forum</a>
@@ -143,7 +150,7 @@
 		<h1>My Tasks</h1>
 		
 		<ul>
-		  {{#each this}}
+		  {{#each this.tasks}}
 		    <li>
 		      <a href="/assigned/{{_id}}"> {{title}} </a>
 		    </li>
@@ -173,6 +180,10 @@
 	  {{> loginButtons}}
   
       {{#if currentUser}}
+		<p>
+			Credits: {{this.userData.credits}}
+		</p>
+		
 		<li>
 		  <a href="/forum">Task Forum</a>
 		  <a href="/create">Create Task</a>
@@ -225,6 +236,10 @@
 	  {{> loginButtons}}
   
       {{#if currentUser}}
+	  	<p>
+			Credits: {{this.userData.credits}}
+		</p>
+		
 		<li>
 		  <a href="/forum">Task Forum</a>
 		  <a href="/create">Create Task</a>

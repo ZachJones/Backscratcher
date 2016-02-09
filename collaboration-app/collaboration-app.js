@@ -22,33 +22,45 @@ if (Meteor.isClient)
 
       this.route('home', {
         path: '/',  //overrides the default '/home'
+		data: function () {return {
+			userData: UserInfo.findOne({user: Meteor.userId()})}
+		}
       });
 
       this.route('forum', {
         data: function () {return {
 			tasks: Tasks.find({ $and: [{assignedTo: ""}, {createdBy: {$not: Meteor.userId()}}]}, {sort: {createdAt: -1}}),
-			userData: UserInfo.findOne({user: Meteor.userId()}),
-
-		}
+			userData: UserInfo.findOne({user: Meteor.userId()})}
 		}
       });
 
       this.route('create', {
-		data: function () {return UserInfo.find()}
+		data: function () {return {
+			userData: UserInfo.findOne({user: Meteor.userId()})}
+		}
 	  });
 
       this.route('myTasks', {
-	    data: function () {return Tasks.find({ $and: [{ $or: [{completed1: ""}, {completed2: ""}]}, {$or: [{assignedTo: Meteor.userId()}, {createdBy: Meteor.userId()}]}]}, {sort: {createdAt: -1}})}
+	    data: function () {return {
+			tasks: Tasks.find({ $and: [{ $or: [{completed1: ""}, {completed2: ""}]}, {$or: [{assignedTo: Meteor.userId()}, {createdBy: Meteor.userId()}]}]}, {sort: {createdAt: -1}}),
+			userData: UserInfo.findOne({user: Meteor.userId()})}
+		}
 	  });
 	  
 	  this.route('viewTask', {
         path: '/task/:_id',
-        data: function () {return Tasks.findOne({_id: this.params._id})},
-      });
+        data: function () {return {
+			tasks: Tasks.findOne({_id: this.params._id}),
+			userData: UserInfo.findOne({user: Meteor.userId()})}
+		}
+	});
 	  
 	  this.route('viewAssignedTask', {
         path: '/assigned/:_id',
-        data: function () {return Tasks.findOne({_id: this.params._id})},
+        data: function () {return {
+			tasks: Tasks.findOne({_id: this.params._id}),
+			userData: UserInfo.findOne({user: Meteor.userId()})}
+		}
       });
     });
 
@@ -95,7 +107,7 @@ if (Meteor.isClient)
 		'click button': function (event) {
 			
 			//Assign task to current user
-			Tasks.update(this._id, {$set: {assignedTo: Meteor.userId()}});
+			Tasks.update(this.tasks._id, {$set: {assignedTo: Meteor.userId()}});
 
 			document.getElementById("button").style.display="none";
 		}
