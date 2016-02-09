@@ -38,11 +38,14 @@
   <div class="container">
     <header>
       <h1 id="head">Backscratcher</h1>
-	  
+
 	  {{> loginButtons}}
-	  
+
 	  {{#if currentUser}}
-		{{genUserData}}
+		<p>
+			Credits: {{this.userData.credits}}
+		</p>
+
 
 		<li>
 		<a href="forum">Task Forum</a>
@@ -51,9 +54,9 @@
 		</li>
 
 		<h1>Task Forum</h1>
-		
+
 		<ul>
-		  {{#each this}}
+		  {{#each this.tasks}}
 			<li>
 			  <a href="/task/{{_id}}"> {{title}} </a>
 			</li>

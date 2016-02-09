@@ -25,7 +25,12 @@ if (Meteor.isClient)
       });
 
       this.route('forum', {
-        data: function () {return Tasks.find({ $and: [{assignedTo: ""}, {createdBy: {$not: Meteor.userId()}}]}, {sort: {createdAt: -1}})}
+        data: function () {return {
+			tasks: Tasks.find({ $and: [{assignedTo: ""}, {createdBy: {$not: Meteor.userId()}}]}, {sort: {createdAt: -1}}),
+			userData: UserInfo.findOne({user: Meteor.userId()}),
+
+		}
+		}
       });
 
       this.route('create', {
