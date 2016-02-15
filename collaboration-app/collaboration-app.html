@@ -18,9 +18,10 @@
 		</p>
 		
 		<li>
-		  <a href="forum">Task Forum</a>
-		  <a href="create">Create Task</a>
-		  <a href="myTasks">My Tasks</a>
+		  <a href="/forum">Task Forum</a>
+		  <a href="/create">Create Task</a>
+		  <a href="/myTasks">My Tasks</a>
+		  <a href="/tipUser">Tip a User</a>
 		</li>
 		{{/if}}
       </header>
@@ -52,9 +53,10 @@
 
 
 		<li>
-		<a href="forum">Task Forum</a>
-		<a href="create">Create Task</a>
-		<a href="myTasks">My Tasks</a>
+		<a href="/forum">Task Forum</a>
+		<a href="/create">Create Task</a>
+		<a href="/myTasks">My Tasks</a>
+		<a href="/tipUser">Tip a User</a>
 		</li>
 
 		<h1>Task Forum</h1>
@@ -95,9 +97,10 @@
 		</p>
 		
 		<li>
-		  <a href="forum">Task Forum</a>
-		  <a href="create">Create Task</a>
-		  <a href="myTasks">My Tasks</a>
+		  <a href="/forum">Task Forum</a>
+		  <a href="/create">Create Task</a>
+		  <a href="/myTasks">My Tasks</a>
+		  <a href="/tipUser">Tip a User</a>
 		</li>
 
 		<h1>Create Task</h1>
@@ -142,9 +145,10 @@
 		</p>
 
 		<li>
-		  <a href="forum">Task Forum</a>
-		  <a href="create">Create Task</a>
-		  <a href="myTasks">My Tasks</a>
+		  <a href="/forum">Task Forum</a>
+		  <a href="/create">Create Task</a>
+		  <a href="/myTasks">My Tasks</a>
+		  <a href="/tipUser">Tip a User</a>
 		</li>
 
 		<h1>My Tasks</h1>
@@ -188,6 +192,7 @@
 		  <a href="/forum">Task Forum</a>
 		  <a href="/create">Create Task</a>
 		  <a href="/myTasks">My Tasks</a>
+		  <a href="/tipUser">Tip a User</a>
 		</li>
 
 		<h1>Task</h1>
@@ -244,6 +249,7 @@
 		  <a href="/forum">Task Forum</a>
 		  <a href="/create">Create Task</a>
 		  <a href="/myTasks">My Tasks</a>
+		  <a href="/tipUser">Tip a User</a>
 		</li>
 
 		<h1>Task</h1>
@@ -276,5 +282,52 @@
 	  {{/if}}
 	</header>
   </div>
+</body>
+</template>
+
+<template name = 'tipUser'>
+<head>
+  <title>collaboration-app</title>
+</head>
+
+<body>
+  <div class="container">
+	<header>
+      <h1 id="head">Backscratcher</h1>
+
+	  {{> loginButtons}}
+	  
+	  {{#if currentUser}}
+		<p>
+			Credits: {{this.userData.credits}}
+		</p>
+		
+		<li>
+		  <a href="/forum">Task Forum</a>
+		  <a href="/create">Create Task</a>
+		  <a href="/myTasks">My Tasks</a>
+		  <a href="/tipUser">Tip a User</a>
+		</li>
+
+		<h1>Tip User</h1>
+		
+		<form class="tip-user">
+
+			<input type="text" id="user" placeholder="User" />
+		    <input type="text" id="credits" placeholder="Credits" />
+		    <span class="button">
+		      <button type="button">Tip</button>
+		    </span>
+
+		</form>
+	  {{else}}
+	    <li>
+		  <p> Welcome to the Backscratcher<sup>tm</sup> collaborative platform. </p> 
+		  <p> Please login to continue. </p>
+	    </li>
+	  {{/if}}
+	
+	</header>
+</div>
 </body>
 </template>

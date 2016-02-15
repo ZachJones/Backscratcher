@@ -62,6 +62,13 @@ if (Meteor.isClient)
 			userData: UserInfo.findOne({user: Meteor.userId()})}
 		}
       });
+	  
+	  this.route('tipUser', {
+        data: function () {return {
+			allUsers: UserInfo.find({}),
+			userData: UserInfo.findOne({user: Meteor.userId()})}
+		}
+      });
     });
 
     Template.create.events({
@@ -99,6 +106,41 @@ if (Meteor.isClient)
 		else
 		{
 			throw new Error("You don't have enough credits, please enter an amount you can afford")
+		}
+      }
+    });
+	
+	    Template.tipUser.events({
+      'click button': function (event) {
+
+        //Get values from form element
+		var enteredUser = document.getElementById('user').value;
+		var credits = document.getElementById('credits').value;
+		var currentUser = UserInfo.findOne({user: Meteor.userId()});
+		var tippedUser = UserInfo.findOne({username: enteredUser})
+		var minusCredits = currentUser.credits - credits;
+		var addCredits = Number(tippedUser.credits) + Number(credits);
+		
+		if(tippedUser)
+		{
+			if(minusCredits >= 0 && credits > 0)
+			{
+				//Update Credits
+				UserInfo.update({_id: currentUser._id}, {$set: {credits: minusCredits}});
+				UserInfo.update({_id: tippedUser._id}, {$set: {credits: addCredits}});
+				
+				//Clear form
+				document.getElementById('user').value = "";
+				document.getElementById('credits').value = "";	
+			}
+			else
+			{
+				throw new Error("You don't have enough credits, please enter an amount you can afford")
+			}
+		}
+		else
+		{
+			throw new Error("This user does not exist, please make sure you've entered their username correctly")
 		}
       }
     });
@@ -149,8 +191,7 @@ if (Meteor.isClient)
 			}
 			else if(found == false)
 			{
-				console.log("Created!")
-				UserInfo.insert({user: Meteor.userId(), credits: "100"})
+				UserInfo.insert({user: Meteor.userId(), credits: "100", username: Meteor.user().username})
 			}
 	}});
 	

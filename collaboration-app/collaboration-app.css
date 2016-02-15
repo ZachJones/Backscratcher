@@ -79,6 +79,21 @@ form {
   outline: 0;
 }
 
+.tip-user input {
+  box-sizing: border-box;
+  padding: 10px 0;
+  padding-bottom: 50px;
+  background: transparent;
+  border: none;
+  width: 100%;
+  padding-right: 80px;
+  font-size: 1em;
+}
+
+.tip-user input:focus{
+  outline: 0;
+}
+
 button {
     background-color: #4CAF50; /* Green */
     border: none;
