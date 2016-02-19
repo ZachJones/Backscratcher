@@ -195,27 +195,45 @@
 		  <a href="/tipUser">Tip a User</a>
 		</li>
 
-		<h1>Task</h1>
-
 		<ul>
 		  <li>
 		    <p> <b>Task</b> </p>
-		    <p> {{title}} </p>
+		    <p> {{this.tasks.title}} </p>
 		  </li>
 
 		  <li>
 		    <p> <b>Description</b> </p>
-		    <p> {{description}} </p>
+		    <p> {{this.tasks.description}} </p>
 		  </li>
 
 		  <li>
 		    <p> <b>Reward</b> </p>
-		    <p> {{credits}} </p>
+		    <p> {{this.tasks.credits}} </p>
 		  </li>
 
-		  <span class="button">
-		    <button type="button" id="button">Accept Task</button>
+		  <span class="taskButton">
+		    <button type="button" id="taskButton">Accept Task</button>
 		  </span>
+		</ul>
+		
+		<li>
+		  <h2> Discussion Thread </h2>
+		</li>
+		
+		<ul>
+		  {{#each this.discussions}}
+		    <li>
+		      <p> {{comment}} </p>
+			  <p> <b> {{createdBy}} </b> </p>
+			  <p> {{createdAt}} </p>
+		    </li>
+		  {{/each}}
+
+		  <textarea type="text" id="newComment" placeholder="New Comment..." cols="74" rows="10"></textarea>
+		  <span class="commentButton">
+		    <button type="button" id="commentButton">Enter New Comment</button>
+		  </span>
+		  
 		</ul>
 	  {{else}}
 	    <li>
@@ -252,27 +270,45 @@
 		  <a href="/tipUser">Tip a User</a>
 		</li>
 
-		<h1>Task</h1>
-
 		<ul>
 		  <li>
 		    <p> <b>Task</b> </p>
-		    <p> {{title}} </p>
+		    <p> {{this.tasks.title}} </p>
 		  </li>
 
 		  <li>
 		    <p> <b>Description</b> </p>
-		    <p> {{description}} </p>
+		    <p> {{this.tasks.description}} </p>
 		  </li>
 
 		  <li>
 		    <p> <b>Reward</b> </p>
-		    <p> {{credits}} </p>
+		    <p> {{this.tasks.credits}} </p>
 		  </li>
 		  
-		  <span class="button">
-		    <button type="button" id="button">Task Completed</button>
+		  <span class="taskButton">
+		    <button type="button" id="taskButton">Task Completed</button>
 		  </span>
+		</ul>
+		
+		<li>
+		  <h2> Discussion Thread </h2>
+		</li>
+		
+		<ul>
+		  {{#each this.discussions}}
+		    <li>
+		      <p> {{comment}} </p>
+			  <p> <b> {{createdBy}} </b> </p>
+			  <p> {{createdAt}} </p>
+		    </li>
+		  {{/each}}
+
+		  <textarea type="text" id="newComment" placeholder="New Comment..." cols="74" rows="10"></textarea>
+		  <span class="commentButton">
+		    <button type="button" id="commentButton">Enter New Comment</button>
+		  </span>
+		  
 		</ul>
 	  {{else}}
 	    <li>

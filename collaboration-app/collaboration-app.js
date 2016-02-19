@@ -2,12 +2,8 @@ if(Meteor.isServer)
 {
 	var database = new MongoInternals.RemoteCollectionDriver("mongodb://127.0.0.1:3001/meteor");
 	Tasks = new Mongo.Collection("tasks", {_driver: database});
-	//Meteor.publish('tasks', function() { return Tasks.find(); }); --- Not needed with autopublish
-	
-	//database.mongo.close();
-	
-	//var database2 = new MongoInternals.RemoteCollectionDriver("mongodb://127.0.0.1:3007/meteor");
 	UserInfo = new Mongo.Collection("userInfo", {_driver: database});
+	Discussions = new Mongo.Collection("discussions", {_driver: database});
 }
 
 if (Meteor.isClient) 
@@ -17,6 +13,9 @@ if (Meteor.isClient)
 	
 	Meteor.subscribe('userInfo');
 	UserInfo = new Mongo.Collection("userInfo");
+	
+	Meteor.subscribe('discussions');
+	Discussions = new Mongo.Collection("discussions");
 	
     Router.map(function () {
 
@@ -51,7 +50,8 @@ if (Meteor.isClient)
         path: '/task/:_id',
         data: function () {return {
 			tasks: Tasks.findOne({_id: this.params._id}),
-			userData: UserInfo.findOne({user: Meteor.userId()})}
+			userData: UserInfo.findOne({user: Meteor.userId()}),
+			discussions: Discussions.find({task: this.params._id})}
 		}
 	});
 	  
@@ -59,7 +59,8 @@ if (Meteor.isClient)
         path: '/assigned/:_id',
         data: function () {return {
 			tasks: Tasks.findOne({_id: this.params._id}),
-			userData: UserInfo.findOne({user: Meteor.userId()})}
+			userData: UserInfo.findOne({user: Meteor.userId()}),
+			discussions: Discussions.find({task: this.params._id})}
 		}
       });
 	  
@@ -146,32 +147,70 @@ if (Meteor.isClient)
     });
 	
 	Template.viewTask.events({
-		'click button': function (event) {
+		'click .taskButton': function (event) {
 			
 			//Assign task to current user
 			Tasks.update(this.tasks._id, {$set: {assignedTo: Meteor.userId()}});
 
-			document.getElementById("button").style.display="none";
+			document.getElementById("taskButton").style.display="none";
+		}
+	});
+	
+	Template.viewTask.events({
+		'click .commentButton': function (event) {
+			
+			var newComment = document.getElementById('newComment').value;
+			var taskId = Router.current().params._id;
+
+			//Save entered comment to file
+			Discussions.insert({
+			  task: taskId,
+			  comment: newComment,
+			  createdBy: Meteor.user().username,
+			  createdAt: new Date() // current time
+			});
+			
+			//Clear form
+			document.getElementById('newComment').value = "";
 		}
 	});
 	
 	Template.viewAssignedTask.events({
-		'click button': function (event) {
+		'click .taskButton': function (event) {
 			
-			//Complete task for current user
-			var taskId = Router.current().params._id;
-			var currentTask = Tasks.findOne({_id: taskId});
+		//Complete task for current user
+		var taskId = Router.current().params._id;
+		var currentTask = Tasks.findOne({_id: taskId});
 			
-			if(currentTask.completed1 != Meteor.userId() && currentTask.completed2 != Meteor.userId)
-			{
+		if(currentTask.completed1 != Meteor.userId() && currentTask.completed2 != Meteor.userId)
+		{
 				
-				if(currentTask.completed1 == "")
-					Tasks.update(taskId, {$set: {completed1: Meteor.userId()}});
-				else
-					Tasks.update(taskId, {$set: {completed2: Meteor.userId()}});
-			}
+			if(currentTask.completed1 == "")
+				Tasks.update(taskId, {$set: {completed1: Meteor.userId()}});
+			else
+				Tasks.update(taskId, {$set: {completed2: Meteor.userId()}});
+		}
 			
-			document.getElementById("button").style.display="none";
+		document.getElementById("taskButton").style.display="none";
+		}
+	});
+		
+	Template.viewAssignedTask.events({
+		'click .commentButton': function (event) {
+			
+			var newComment = document.getElementById('newComment').value;
+			var taskId = Router.current().params._id;
+
+			//Save entered comment to file
+			Discussions.insert({
+			  task: taskId,
+			  comment: newComment,
+			  createdBy: Meteor.user().username,
+			  createdAt: new Date() // current time
+			});
+			
+			//Clear form
+			document.getElementById('newComment').value = "";
 		}
 	});
 	
@@ -182,11 +221,9 @@ if (Meteor.isClient)
 		{
 			var found = false;
 			var id = Meteor.userId();
-			console.log(id);
 
 			if(UserInfo.findOne({user: Meteor.userId()}))
 			{
-				console.log(UserInfo.findOne({user: Meteor.userId()}))
 				found = true;
 			}
 			else if(found == false)
@@ -202,8 +239,6 @@ if (Meteor.isClient)
 			var created = 0;
 			var doc = UserInfo.findOne({user: Meteor.userId()});
 			var creditElement = document.getElementById("currentCredits");
-			
-			//console.log(creditElement);
 					
 			if(doc && !creditElement)
 			{
@@ -213,13 +248,9 @@ if (Meteor.isClient)
 				creditPara.setAttribute("id", "currentCredits")
 				var textVar = document.createTextNode("Credits: " + doc.credits);
 				creditPara.appendChild(textVar);
-				
-				//console.log(creditPara);
-				
+
 				var elementLoc = document.getElementById("head");
-				
-				//console.log(elementLoc);
-				
+
 				elementLoc.appendChild(creditPara);
 				
 				created = 1;		
@@ -234,9 +265,7 @@ if (Meteor.isClient)
 			var created = 0;
 			var doc = UserInfo.findOne({user: Meteor.userId()})
 			var creditElement = document.getElementById("currentCredits");
-			
-			//console.log(creditElement);
-					
+		
 			if(doc && !creditElement)
 			{
 				console.log("Creating element");
@@ -245,13 +274,9 @@ if (Meteor.isClient)
 				creditPara.setAttribute("id", "currentCredits")
 				var textVar = document.createTextNode("Credits: " + doc.credits);
 				creditPara.appendChild(textVar);
-				
-				//console.log(creditPara);
-				
+
 				var elementLoc = document.getElementById("head");
-				
-				//console.log(elementLoc);
-				
+
 				elementLoc.appendChild(creditPara);
 				
 				created = 1;		
@@ -271,19 +296,13 @@ if (Meteor.isClient)
 					
 			if(doc)
 			{
-				console.log(doc.credits); //How to reference the current credits?
-				
 				var creditPara = document.createElement("P");
 				creditPara.setAttribute("id", "currentCredits")
 				var textVar = document.createTextNode("Credits: " + doc.credits);
 				creditPara.appendChild(textVar);
-				
-				console.log(creditPara);
-				
+
 				var elementLoc = document.getElementById("head");
-				
-				console.log(elementLoc);
-				
+
 				elementLoc.appendChild(creditPara);
 				
 				created = 1;		
